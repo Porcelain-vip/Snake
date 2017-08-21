@@ -1,27 +1,26 @@
-package package1;
+package CN.Tendollar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
-public class SnakeViewController extends JFrame {
-    public static final int WIDTH = 811, HEIGHT = 638;
-    BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-    SnakeModel snakeModel = null;
+public class Snake extends JFrame {
+    public static final int WINDOW_WIDTH = 811, WINDOW_HEIGHT = 638;
+    BufferedImage bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+    SnakeCore snake = null;
     Node food = null;
+    //boolean stop = false;
 
-    public SnakeViewController() {
+    public Snake() {
         //NOTHING
     }
 
     public void launchSnake() {
 
-        snakeModel = new SnakeModel();
-        food = snakeModel.initFood();
+        snake = new SnakeCore();
+        food = snake.initFood();
         //初始化图形化界面
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -46,36 +45,32 @@ public class SnakeViewController extends JFrame {
         }).start();
     }
 
+    //创建图形化界面
     private void initGUI() {
         //设置标题
-        setTitle("Greedy Snake Game Programed by Porcelain");
-        setBounds(new Rectangle(100, 100, WIDTH, HEIGHT));
+        super.setTitle("Greedy Snake Game Programed by Porcelain");
+        super.setBounds(new Rectangle(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT));
         //增添键盘侦听器
-        addKeyListener(new KeyAdapter() {
+        super.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent keyEvent) {
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
-                        snakeModel.tmpDirection = Direction.LEFT;
+                        snake.tmpDirection = Direction.LEFT;
                         break;
                     case KeyEvent.VK_RIGHT:
-                        snakeModel.tmpDirection = Direction.RIGHT;
+                        snake.tmpDirection = Direction.RIGHT;
                         break;
                     case KeyEvent.VK_UP:
-                        snakeModel.tmpDirection = Direction.UP;
+                        snake.tmpDirection = Direction.UP;
                         break;
-                    case KeyEvent.VK_DOWN:
-                        snakeModel.tmpDirection = Direction.DOWN;
+                    default:
+                        snake.tmpDirection = Direction.DOWN;
                 }
             }
         });
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
-        setVisible(true);
+        super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        super.setVisible(true);
     }
 
     //这是最重要的一个方法了，因为要不停的刷新界面
@@ -83,23 +78,24 @@ public class SnakeViewController extends JFrame {
     public void paint(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) bufferedImage.getGraphics();
         //两者顺序不可颠倒
+        //初始化窗口大小和颜色
         graphics2D.setColor(Color.ORANGE);
-        graphics2D.fillRect(0, 0, WIDTH, HEIGHT);
+        graphics2D.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        snakeModel.drawBody(graphics2D);
+        snake.drawBody(graphics2D);
         food.drawNode(graphics2D);
-        snakeModel.move();
+        snake.move();
 
+        g.drawImage(bufferedImage, 0, 0, null);
 
-        if (snakeModel.isTouchingFood(food)) {
-            snakeModel.addHead();
-            food = snakeModel.initFood();
+        if (snake.isTouchingFood(food)) {
+            snake.addHead();
+            food = snake.initFood();
         }
 
-        if (snakeModel.isTouchingItself()) {
+        if (snake.isTouchingItself()) {
             System.exit(0);
         }
 
-        g.drawImage(bufferedImage, 0, 0, null);
     }
 }

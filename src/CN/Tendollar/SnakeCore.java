@@ -1,17 +1,18 @@
-package package1;
+package CN.Tendollar;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class SnakeModel {
-    public List<Node> snakeBody = new ArrayList<>();
+public class SnakeCore {
+    public List<Node> snakeBody = Collections.synchronizedList(new ArrayList<>());
     //最开始赋予贪吃蛇一个方向
     Direction direction = Direction.RIGHT;
-    Direction tmpDirection = Direction.RIGHT;
+    Direction tmpDirection = direction;
 
-    public SnakeModel() {
+    public SnakeCore() {
         snakeBody.add(new Node(8, 30, Color.black));
         snakeBody.add(new Node(23, 30, Color.black));
     }
@@ -71,7 +72,7 @@ public class SnakeModel {
                         System.exit(0);
                     } else {
                         this.snakeBody.add(0,
-                                new Node(head.getxCoordinate() + Node.NODEWIDTH,
+                                new Node(head.getxCoordinate() + Node.NODE_WIDTH,
                                         head.getyCoordinate(),
                                         Color.RED));
                     }
@@ -81,7 +82,7 @@ public class SnakeModel {
                         System.exit(0);
                     }
                     this.snakeBody.add(0,
-                            new Node(head.getxCoordinate() - Node.NODEWIDTH,
+                            new Node(head.getxCoordinate() - Node.NODE_WIDTH,
                                     head.getyCoordinate(),
                                     Color.GREEN));
                 }
@@ -93,7 +94,7 @@ public class SnakeModel {
                         System.exit(0);
                     }
                     this.snakeBody.add(0,
-                            new Node(head.getxCoordinate() - Node.NODEWIDTH,
+                            new Node(head.getxCoordinate() - Node.NODE_WIDTH,
                                     head.getyCoordinate(),
                                     Color.CYAN));
                 } else {
@@ -102,7 +103,7 @@ public class SnakeModel {
                         System.exit(0);
                     } else {
                         this.snakeBody.add(0,
-                                new Node(head.getxCoordinate() + Node.NODEWIDTH,
+                                new Node(head.getxCoordinate() + Node.NODE_WIDTH,
                                         head.getyCoordinate(),
                                         Color.MAGENTA));
                     }
@@ -116,7 +117,7 @@ public class SnakeModel {
                     } else {
                         this.snakeBody.add(0,
                                 new Node(head.getxCoordinate(),
-                                        head.getyCoordinate() + Node.NODEHEIGHT,
+                                        head.getyCoordinate() + Node.NODE_HEIGHT,
                                         Color.GREEN));
                     }
                 } else {
@@ -126,7 +127,7 @@ public class SnakeModel {
                     } else {
                         this.snakeBody.add(0,
                                 new Node(head.getxCoordinate(),
-                                        head.getyCoordinate() - Node.NODEHEIGHT,
+                                        head.getyCoordinate() - Node.NODE_HEIGHT,
                                         Color.BLUE));
                     }
                 }
@@ -139,7 +140,7 @@ public class SnakeModel {
                     } else {
                         this.snakeBody.add(0,
                                 new Node(head.getxCoordinate(),
-                                        head.getyCoordinate() - Node.NODEHEIGHT,
+                                        head.getyCoordinate() - Node.NODE_HEIGHT,
                                         Color.RED));
                     }
                 } else {
@@ -149,7 +150,7 @@ public class SnakeModel {
                     } else {
                         this.snakeBody.add(0,
                                 new Node(head.getxCoordinate(),
-                                        head.getyCoordinate() + Node.NODEHEIGHT,
+                                        head.getyCoordinate() + Node.NODE_HEIGHT,
                                         Color.black));
                     }
                 }
